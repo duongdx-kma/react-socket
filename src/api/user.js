@@ -14,6 +14,15 @@ const UserAPI = {
     })
   },
 
+  getAllProject(accessToken, userId) {
+    const url = `/projects?user_id=${userId}`
+    return axiosClient.get(url, {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`
+      }
+    })
+  },
+
   findById(id, accessToken) {
     const url = "/users/" + id
     return axiosClient.get(url, {

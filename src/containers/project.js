@@ -28,11 +28,15 @@ const Project = () => {
       setErrorMessage('Server error')
     }
   }
-
+  const sortArrayDesc = (array) => {
+    return array.sort(function (a, b) {
+      return b.project_id - a.project_id;
+    })
+  }
   const fetchDataProjects = async () => {
     try {
-      const response = await UserAPI.getAll(localStorage.getItem('token'));
-      setProject(response?.data)
+      const response = await UserAPI.getAllProject(localStorage.getItem('token'), userLogin.id);
+      setProject(sortArrayDesc(response?.data))
     } catch (err) {
       setErrorMessage('Server error')
     }
@@ -40,6 +44,7 @@ const Project = () => {
 
   useEffect(() => {
     fetchDataUser()
+    fetchDataProjects()
   }, [])
 
   useEffect(() => {
@@ -55,8 +60,8 @@ const Project = () => {
           name: dataResponse?.name,
           users: dataResponse?.users
         })
-        console.log(newProject, 212121)
-        setProject(newProject)
+
+        setProject(sortArrayDesc(newProject))
         setDataCreate(initData)
       })
     } catch (err) {
@@ -135,8 +140,9 @@ const Project = () => {
   const render = () => {
     return projects && projects.map((project) =>
       <div className={"row"} style={{margin: 5, border: 1}} key={project.project_id}>
-        <div className={"col-7"} style={{margin: 5}}>Project Name: {project.name}</div>
-        <div className={"col-4"}>
+        <div className={"col-2"} style={{margin: 5}}>ID: {project.project_id}</div>
+        <div className={"col-4"} style={{margin: 5}}>Project Name: {project.name}</div>
+        <div className={"col-3"}>
           <Link style={{margin: 5}} to={"/tasks/" + project.project_id}>
             <button className={"common-button"}>Go to list Tasks</button>
           </Link>
