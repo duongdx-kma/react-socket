@@ -23,7 +23,6 @@ function App() {
         setActive('users')
         break
       case projectRoute.find(a => pathname.includes(a)) != undefined:
-        console.log('projectsprojectsprojectsprojects')
         setActive('projects')
         break
       default:

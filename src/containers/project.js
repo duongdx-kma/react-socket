@@ -72,7 +72,10 @@ const Project = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if ((typeof dataCreate.users === 'undefined' && dataCreate.users.length <= 0) || dataCreate.event_name == '') {
+    if ((typeof dataCreate.users === 'undefined' && dataCreate.users.length <= 0) ||
+      dataCreate.event_name === '' ||
+      dataCreate.name === ''
+    ) {
       setErrorMessage("Data invalid")
 
       return
@@ -125,7 +128,7 @@ const Project = () => {
           />
         </Form.Group>
         <Form.Group as={Col} controlId="my_multiselect_field">
-          <Form.Label>My multiselect</Form.Label>
+          <Form.Label>Users </Form.Label>
           <Form.Control as="select" multiple value={dataCreate.users} onChange={changeSelect}>
             {users && users.map(user => <option key={user.id} value={user.id}>{user.name}</option>)}
           </Form.Control>
@@ -143,7 +146,7 @@ const Project = () => {
         <div className={"col-2"} style={{margin: 5}}>ID: {project.project_id}</div>
         <div className={"col-4"} style={{margin: 5}}>Project Name: {project.name}</div>
         <div className={"col-3"}>
-          <Link style={{margin: 5}} to={"/tasks/" + project.project_id}>
+          <Link style={{margin: 5}} to={`/tasks?project_id=${project.project_id}&project_name=${project.name}`}>
             <button className={"common-button"}>Go to list Tasks</button>
           </Link>
         </div>
@@ -156,7 +159,7 @@ const Project = () => {
       {renderForm}
 
       <div>
-        <h3>List user page</h3>
+        <h3>List Project</h3>
         {render()}
       </div>
     </div>

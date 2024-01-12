@@ -22,6 +22,23 @@ const UserAPI = {
       }
     })
   },
+  getAllTask(accessToken, projectId) {
+    const url = `/tasks?project_id=${projectId}`
+    return axiosClient.get(url, {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`
+      }
+    })
+  },
+
+  getProjectUser(accessToken, projectId) {
+    const url = `/projects/get-users/${projectId}`
+    return axiosClient.get(url, {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`
+      }
+    })
+  },
 
   findById(id, accessToken) {
     const url = "/users/" + id

@@ -55,6 +55,14 @@ export const listRouter = [
     auth: true,
     admin: false
   },
+  {
+    key: 8,
+    path: '/tasks',
+    path_redirect: '/',
+    component: 'task',
+    auth: true,
+    admin: false
+  },
 ];
 
 export const STYLE_LOADER = {
