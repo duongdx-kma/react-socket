@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    environment {
+        REACT_APP_API_URL = 'https://api.duongdx.com'
+        REACT_APP_WS_URL = 'wss://api.duongdx.com/ws'
+    }
+
+    stages {
+        stage('fetching code') {
+            steps {
+                git branch: 'master', url: 'https://github.com/duongdx-kma/react-socket.git'
+            }
+        }
+
+        stage('Make env') {
+            steps {
+                echo '***************** Make .env *******************'
+                sh '''
+                    echo "REACT_APP_API_URL=$REACT_APP_API_URL" >> .env
+                    echo "REACT_APP_WS_URL=$REACT_APP_WS_URL" >> .env
+                '''
+            }
+        }
+
+        stage('Install Packages') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Build code') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+
+        stage('Deploy to s3') {
+            steps {
+                sh '''
+                    aws s3 sync build/ s3://duongdx-frontend-88ifzrzirl --region=ap-southeast-1
+                '''
+            }
+        }
+    }
+}
