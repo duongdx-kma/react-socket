@@ -1,4 +1,65 @@
 pipeline {
+    agent {
+        label 'agent01'
+    }
+    environment {
+        DOCKER_CREDENTIALS_ID = 'your_docker_credentials_id' // ID of Docker Hub credentials in Jenkins
+        DOCKER_IMAGE_NAME = 'your_username/your_image_name' // Name of your Docker Hub repository/image
+        NODE_IMAGE = 'node:latest' // Node.js Docker image to use
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout your source code repository
+                git 'https://github.com/your/repo.git'
+            }
+        }
+        stage('Run Tests in Docker Container') {
+            steps {
+                // Run Node.js tests inside a Docker container
+                script {
+                    docker.image(NODE_IMAGE).inside('-v /var/run/docker.sock:/var/run/docker.sock') {
+                        sh 'npm install'
+                        sh 'npm test'
+                    }
+                }
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                // Build Docker image
+                script {
+                    docker.build(DOCKER_IMAGE_NAME, "--build-arg NODE_IMAGE=${NODE_IMAGE} .")
+                }
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                // Push Docker image to Docker Hub
+                script {
+                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        docker.withRegistry('https://index.docker.io/v1/', DOCKER_USERNAME, DOCKER_PASSWORD) {
+                            docker.image(DOCKER_IMAGE_NAME).push('latest')
+                        }
+                    }
+                }
+            }
+        }
+    }
+    post {
+        success {
+            // Post-build actions if successful
+            echo 'Pipeline successfully executed!'
+        }
+        failure {
+            // Post-build actions if failed
+            echo 'Pipeline execution failed!'
+        }
+    }
+}
+
+
+pipeline {
     agent any
 
     environment {
