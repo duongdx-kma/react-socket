@@ -52,7 +52,7 @@ function App() {
   const renderContent = () => {
     return <div className={'row m-5'}>
       <div className={'col-3'}>
-        {user ? <span style={{fontSize: 25}}><span>Welcome!</span><span className={'text-success'}> {user.name}</span></span> : ''}
+        {user ? <span style={{fontSize: 25}}><span>Welcome sir!</span><span className={'text-success'}> {user.name}</span></span> : ''}
       </div>
       {isLogin ?
         <div className={'col-9'}>
