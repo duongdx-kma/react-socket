@@ -28,9 +28,14 @@ pipeline {
             steps {
                 sh '''
                   npm install
+                  npm run test
+                  npm run build
                 '''
-                // npm run test
-                // npm run build
+            }
+            post {
+                failure {
+                    echo 'Test stage failed!'
+                }
             }
         }
         // deploy instructions
@@ -46,6 +51,11 @@ pipeline {
                 // Build Docker image
                 script {
                     docker.build(DOCKER_IMAGE_NAME, '.')
+                }
+            }
+            post {
+                failure {
+                    echo 'Build stage failed!'
                 }
             }
         }
@@ -67,16 +77,17 @@ pipeline {
                     }
                 }
             }
+            post {
+                failure {
+                    echo 'Push image to registry stage failed!'
+                }
+            }
         }
     }
     post {
         success {
             // Post-build actions if successful
             echo 'Pipeline successfully executed!'
-        }
-        failure {
-            // Post-build actions if failed
-            echo 'Pipeline execution failed!'
         }
     }
 }

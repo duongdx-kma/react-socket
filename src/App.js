@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback, useMemo} from 'react';
 import { useState } from "react";
 import "./App.css"
 import {Link, useLocation} from "react-router-dom";
@@ -10,8 +10,8 @@ function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
   const [active, setActive] = useState('home')
   const location = useLocation()
-  const userRoute = ['users']
-  const projectRoute = ['projects', 'tasks']
+  const userRoute =  useMemo(() => ['users'], [])
+  const projectRoute = useMemo(() => ['projects', 'tasks'], [])
   const { updateSocket  } = React.useContext(SocketContext)
 
   const getRoutePath = useCallback((location) => {
@@ -52,7 +52,7 @@ function App() {
   const renderContent = () => {
     return <div className={'row m-5'}>
       <div className={'col-3'}>
-        {user ? <span style={{fontSize: 25}}><span>Welcome!</span><span className={'text-success'}> {user.name}</span></span> : ''}
+        {user ? <span style={{fontSize: 25}}><span>Welcome sir!</span><span className={'text-success'}> {user.name}</span></span> : ''}
       </div>
       {isLogin ?
         <div className={'col-9'}>

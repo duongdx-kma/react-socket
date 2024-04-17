@@ -44,7 +44,7 @@ const Project = () => {
     } catch (err) {
       setErrorMessage('Server error')
     }
-  }, [setProject, setErrorMessage, sortArrayDesc])
+  }, [setProject, setErrorMessage, sortArrayDesc, userLogin])
 
   useEffect(() => {
     fetchDataUser()
@@ -71,9 +71,9 @@ const Project = () => {
     } catch (err) {
       setErrorMessage('ERRRRORRRRR')
     }
-  }, [socket, projects, initData])
+  }, [socket, projects, initData, sortArrayDesc])
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = useCallback(async (event) => {
     event.preventDefault();
 
     if ((typeof dataCreate.users === 'undefined' && dataCreate.users.length <= 0) ||
@@ -94,7 +94,7 @@ const Project = () => {
     } catch (err) {
       console.log('senddddddddddddding error')
     }
-  };
+  }, [dataCreate.event_name, dataCreate.name, dataCreate.users, socket]);
 
   const changeInput = (event) => {
     const {name, value} = event.target

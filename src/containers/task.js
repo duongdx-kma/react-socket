@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useState, useMemo, useCallback} from 'react';
 import {useNavigate, useSearchParams} from "react-router-dom";
 import UserAPI from "../api/user";
 import {Col, Form, Button} from "react-bootstrap";
@@ -15,7 +15,7 @@ const Task = () => {
       title: '',
       description: '',
     };
-  }, [])
+  }, [queryString])
 
   const [tasks, setTask] = useState([])
   const [errorMessage, setErrorMessage] = useState('');
@@ -27,7 +27,7 @@ const Task = () => {
       return b.task_id - a.task_id;
     })
   }
-  const fetchDataTask = async (projectId) => {
+  const fetchDataTask = useCallback( async (projectId) => {
     if (projectId === undefined || projectId == null || projectId === '') {
       navigate('/projects')
     }
@@ -38,9 +38,9 @@ const Task = () => {
     } catch (err) {
       setErrorMessage('Server error')
     }
-  }
+  }, [navigate])
 
-  const fetchUsers = async (projectId) => {
+  const fetchUsers = useCallback(async (projectId) => {
     if (projectId === undefined || projectId == null || projectId === '') {
       navigate('/projects')
     }
@@ -51,7 +51,7 @@ const Task = () => {
     } catch (err) {
       setErrorMessage('Server error')
     }
-  }
+  }, [navigate])
 
   useEffect(() => {
     const projectId = queryString.get('project_id')
