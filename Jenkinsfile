@@ -9,6 +9,9 @@ pipeline {
         NODE_IMAGE = 'node:16-alpine' // Node.js Docker image to use
         REACT_APP_NAME = 'react-socket'
     }
+    tools {
+      nodejs "nodejs"
+    }
     stages {
         stage("Cleanup Workspace") {
             steps {
@@ -16,7 +19,7 @@ pipeline {
             }
         }
         // deploy instructions
-        stage('Run Tests in Docker Container') {
+        stage('Run Tests and build testing') {
             when {
                 // Run only if it's a pull request creation event
                 beforeAgent true
@@ -25,14 +28,11 @@ pipeline {
                 }
             }
             steps {
-                // Run Node.js tests inside a Docker container
-                script {
-                    docker.image(NODE_IMAGE).inside('-v /var/run/docker.sock:/var/run/docker.sock') {
-                        sh 'npm install'
-                        sh 'npm run test'
-                        sh 'npm run build'
-                    }
-                }
+                sh '''
+                  npm install
+                  npm run test
+                  npm run build
+                '''
             }
         }
         // deploy instructions
