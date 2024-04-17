@@ -13,11 +13,6 @@ pipeline {
       nodejs "nodejs-16"
     }
     stages {
-        stage("Cleanup Workspace") {
-            steps {
-                cleanWs()
-            }
-        }
         // deploy instructions
         stage('Run Tests and build testing') {
             steps {
