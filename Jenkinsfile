@@ -26,6 +26,7 @@ pipeline {
        silentResponse: false,
        shouldNotFlatten: false,
        regexpFilterText: '$ref',
+       regexpFilterExpression: 'refs/heads/(.*)' // Corrected regexpFilterExpression
       )
     }
     tools {
@@ -60,11 +61,6 @@ pipeline {
             steps {
                 script {
                     echo "Received webhook payload: \n${params}"
-                    echo "testing current data: ${current_status}"
-                    echo "${merged}"
-                    echo "${ref}"
-                    echo "echo reffff $ref"
-                    echo "${branch}"
                 }
             }
         }
