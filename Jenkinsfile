@@ -23,49 +23,46 @@ pipeline {
             steps {
                 sh '''
                   npm install
-                '''
-            }
-            steps {
-                sh '''
                   npm run test
+                  npm run build
                 '''
             }
         }
         // deploy instructions
-//         stage('Build Docker Image') {
-//             when {
-//                 // Run only if it's a pull request merge event
-//                 beforeAgent false
-//                 expression {
-//                     return currentBuild.changeSets == null
-//                 }
-//             }
-//             steps {
-//                 // Build Docker image
-//                 script {
-//                     docker.build(DOCKER_IMAGE_NAME, '.')
-//                 }
-//             }
-//         }
-//         stage('Push to Docker Hub') {
-//             when {
-//                 // Run only if it's a pull request merge event
-//                 beforeAgent false
-//                 expression {
-//                     return currentBuild.changeSets == null
-//                 }
-//             }
-//             steps {
-//                 // Push Docker image to Docker Hub
-//                 script {
-//                     withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-//                         docker.withRegistry('https://hub.docker.com/', DOCKER_USERNAME, DOCKER_PASSWORD) {
-//                             docker.image(DOCKER_IMAGE_NAME).push('latest')
-//                         }
-//                     }
-//                 }
-//             }
-//         }
+        stage('Build Docker Image') {
+            when {
+                // Run only if it's a pull request merge event
+                beforeAgent false
+                expression {
+                    return currentBuild.changeSets == null
+                }
+            }
+            steps {
+                // Build Docker image
+                script {
+                    docker.build(DOCKER_IMAGE_NAME, '.')
+                }
+            }
+        }
+        stage('Push to Docker Hub') {
+            when {
+                // Run only if it's a pull request merge event
+                beforeAgent false
+                expression {
+                    return currentBuild.changeSets == null
+                }
+            }
+            steps {
+                // Push Docker image to Docker Hub
+                script {
+                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        docker.withRegistry('https://hub.docker.com/', DOCKER_USERNAME, DOCKER_PASSWORD) {
+                            docker.image(DOCKER_IMAGE_NAME).push('latest')
+                        }
+                    }
+                }
+            }
+        }
     }
     post {
         success {
