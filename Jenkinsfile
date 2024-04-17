@@ -9,6 +9,26 @@ pipeline {
         NODE_IMAGE = 'node:16-alpine' // Node.js Docker image to use
         TAG = sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()
     }
+    triggers {
+      GenericTrigger(
+       genericVariables: [
+        [key: 'ref', value: '$.ref'],
+        [key: 'current_status', value: '$.action'],
+        [key: 'merged', value: '$.pull_request.merged'],
+        [key: 'branch', value: '$.pull_request.base.ref'],
+       ],
+
+       causeString: 'Triggered on $ref',
+       token: 'secrettoken',
+       tokenCredentialId: '',
+       printContributedVariables: true,
+       printPostContent: true,
+       silentResponse: false,
+       shouldNotFlatten: false,
+       regexpFilterText: '$ref',
+      )
+    }
+
     tools {
       nodejs "nodejs-16"
     }
@@ -41,7 +61,10 @@ pipeline {
             steps {
                 script {
                     echo "Received webhook payload: \n${params.GENERIC_WEBHOOK_PAYLOAD}"
-                    echo "Received webhook payload: ${params.current_status}, ${params.merged}, ${params.branch}"
+                    echo "Received webhook payload: ${current_status}"
+                    echo "${merged}"
+                    echo "${ref}"
+                    echo "${branch}"
                 }
             }
         }
