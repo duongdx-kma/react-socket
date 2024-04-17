@@ -45,7 +45,7 @@ const Project = () => {
   useEffect(() => {
     fetchDataUser()
     fetchDataProjects()
-  }, [])
+  }, [fetchDataUser, fetchDataProjects])
 
   useEffect(() => {
     try {
@@ -67,7 +67,7 @@ const Project = () => {
     } catch (err) {
       setErrorMessage('ERRRRORRRRR')
     }
-  }, [socket, projects])
+  }, [socket, projects, initData])
 
   const handleSubmit = async (event) => {
     event.preventDefault();

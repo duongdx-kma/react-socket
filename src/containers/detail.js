@@ -20,7 +20,7 @@ const Detail = () => {
   }
   useEffect( () => {
     fetchData()
-  }, [])
+  }, [fetchData])
 
   return (
     <div className="app">

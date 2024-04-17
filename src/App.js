@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import "./App.css"
 import {Link, useLocation} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,11 +18,11 @@ function App() {
     const { pathname } = location;
 
     switch (true) {
-      case userRoute.find(a => pathname.includes(a)) != undefined:
+      case userRoute.find(a => pathname.includes(a)) !== undefined:
         console.log('usersusersusersusers')
         setActive('users')
         break
-      case projectRoute.find(a => pathname.includes(a)) != undefined:
+      case projectRoute.find(a => pathname.includes(a)) !== undefined:
         setActive('projects')
         break
       default:
@@ -33,11 +33,11 @@ function App() {
 
   useEffect(() => {
     getRoutePath(location)
-  }, [location])
+  }, [location, getRoutePath])
 
   useEffect(() => {
     updateSocket(isLogin)
-  }, [isLogin])
+  }, [isLogin, updateSocket])
 
   const logout = () => {
     setIsLogin('')

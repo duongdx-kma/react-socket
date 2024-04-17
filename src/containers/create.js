@@ -25,9 +25,11 @@ const Create = () => {
         age: parseInt(data.age),
       });
 
+      console.log(response)
+
       navigate('/users')
     } catch (err) {
-      if (err?.response?.data?.Code == 422) {
+      if (err?.response?.data?.Code === 422) {
         setErrorMessage(err?.response?.data?.Message)
       } else {
         setErrorMessage('Server error')

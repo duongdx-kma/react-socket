@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useNavigate, useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import UserAPI from "../api/user";
 import {Col, Form, Button} from "react-bootstrap";
 import {SocketContext} from "../context/socket";
@@ -60,7 +60,7 @@ const Task = () => {
 
     fetchDataTask(projectId)
     fetchUsers(projectId)
-  }, [])
+  }, [fetchDataTask, fetchUsers, navigate])
 
   useEffect(() => {
     try {
@@ -87,7 +87,7 @@ const Task = () => {
     } catch (err) {
       setErrorMessage('ERRRRORRRRR')
     }
-  }, [socket, tasks])
+  }, [socket, tasks, initData, users])
 
   const handleSubmit = async (event) => {
     event.preventDefault();

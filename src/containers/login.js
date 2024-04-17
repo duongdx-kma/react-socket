@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import "./styles/login.css";
 import LoginAPI from "../api/authApi";
-import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const navigate = useNavigate();
   // React States
   const [errorMessage, setErrorMessage] = useState('');
   const [data, setData] = useState({

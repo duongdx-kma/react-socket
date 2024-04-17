@@ -20,6 +20,7 @@ pipeline {
                   npm install
                   npm run build
                 '''
+//                 npm run test
             }
         }
         // deploy instructions
