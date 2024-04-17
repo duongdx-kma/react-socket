@@ -39,13 +39,11 @@ pipeline {
             }
         }
         // deploy instructions
+        // https://bit-basics-backup.netlify.app/2019/september/jenkins-job-github-pullrequest/
+        // https://www.linkedin.com/pulse/trigger-jenkins-build-when-pull-request-merged-branch-wijerathne/
         stage('Build Docker Image') {
             when {
-                // Run only if it's a pull request merge event
-                beforeAgent false
-                expression {
-                    return currentBuild.changeSets == null
-                }
+                expression { return params.current_status == "closed" && params.merged == true && params.branch == "master" }
             }
             steps {
                 // Build Docker image
@@ -61,11 +59,7 @@ pipeline {
         }
         stage('Push to Docker Hub') {
             when {
-                // Run only if it's a pull request merge event
-                beforeAgent false
-                expression {
-                    return currentBuild.changeSets == null
-                }
+                expression { return params.current_status == "closed" && params.merged == true && params.branch == "master" }
             }
             steps {
                 // Push Docker image to Docker Hub
