@@ -26,9 +26,9 @@ pipeline {
        silentResponse: false,
        shouldNotFlatten: false,
        regexpFilterText: '$ref',
+       regexpFilterExpression: 'refs/heads/(.*)' // Corrected regexpFilterExpression
       )
     }
-
     tools {
       nodejs "nodejs-16"
     }
@@ -60,11 +60,7 @@ pipeline {
         stage('Log Request') {
             steps {
                 script {
-                    echo "Received webhook payload: \n${params.GENERIC_WEBHOOK_PAYLOAD}"
-                    echo "testing current data: ${current_status}"
-                    echo "${merged}"
-                    echo "${ref}"
-                    echo "${branch}"
+                    echo "Received webhook payload: \n${params}"
                 }
             }
         }
