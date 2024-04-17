@@ -10,7 +10,7 @@ pipeline {
         REACT_APP_NAME = 'react-socket'
     }
     tools {
-      nodejs "nodejs"
+      nodejs "nodejs-16"
     }
     stages {
         stage("Cleanup Workspace") {
