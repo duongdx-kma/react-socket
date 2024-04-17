@@ -20,13 +20,6 @@ pipeline {
         }
         // deploy instructions
         stage('Run Tests and build testing') {
-            when {
-                // Run only if it's a pull request creation event
-                beforeAgent true
-                expression {
-                    return currentBuild.changeSets != null
-                }
-            }
             steps {
                 sh '''
                   npm install
