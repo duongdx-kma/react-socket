@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
                     echo "Received webhook payload: \n${params.GENERIC_WEBHOOK_PAYLOAD}"
-                    echo "Received webhook payload: ${current_status}, ${merged}, ${branch}"
+                    echo "Received webhook payload: ${params.current_status}, ${params.merged}, ${params.branch}"
                 }
             }
         }
