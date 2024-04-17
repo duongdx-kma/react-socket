@@ -28,7 +28,6 @@ pipeline {
                 // Run Node.js tests inside a Docker container
                 script {
                     docker.image(NODE_IMAGE).inside('-v /var/run/docker.sock:/var/run/docker.sock') {
-                        sh "cd ${REACT_APP_NAME}"
                         sh 'npm install'
                         sh 'npm run test'
                         sh 'npm run build'
