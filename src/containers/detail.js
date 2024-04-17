@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import "./styles/login.css";
 import UserAPI from "../api/user";
 import { useParams } from "react-router-dom";
@@ -8,7 +8,7 @@ const Detail = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const { id } = useParams();
 
-  const fetchData = async () => {
+  const fetchData = useCallback( async () => {
     try {
       const response = await UserAPI.findById(id, localStorage.getItem('token'));
       console.log(response?.data)
@@ -17,7 +17,7 @@ const Detail = () => {
     } catch (err) {
       setErrorMessage('Server error')
     }
-  }
+  }, [setUser, setErrorMessage])
   useEffect( () => {
     fetchData()
   }, [fetchData])

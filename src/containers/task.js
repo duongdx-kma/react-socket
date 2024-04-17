@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import {useNavigate, useSearchParams} from "react-router-dom";
 import UserAPI from "../api/user";
 import {Col, Form, Button} from "react-bootstrap";
@@ -8,12 +8,14 @@ const Task = () => {
   const navigate = useNavigate()
   const { socket  } = React.useContext(SocketContext)
   const [queryString] = useSearchParams()
-  const initData = {
-    event_name: 'create/task',
-    project_id: parseInt(queryString.get('project_id')),
-    title: '',
-    description: '',
-  }
+  const initData = useMemo(() => {
+    return {
+      event_name: 'create/task',
+      project_id: parseInt(queryString.get('project_id')),
+      title: '',
+      description: '',
+    };
+  }, [])
 
   const [tasks, setTask] = useState([])
   const [errorMessage, setErrorMessage] = useState('');
@@ -60,7 +62,7 @@ const Task = () => {
 
     fetchDataTask(projectId)
     fetchUsers(projectId)
-  }, [fetchDataTask, fetchUsers, navigate])
+  }, [fetchDataTask, fetchUsers, navigate, queryString])
 
   useEffect(() => {
     try {

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo, useCallback} from 'react';
 import {Link} from "react-router-dom";
 import UserAPI from "../api/user";
 import {Col, Form, Button} from "react-bootstrap";
@@ -7,40 +7,44 @@ import {SocketContext} from "../context/socket";
 const Project = () => {
   const { socket  } = React.useContext(SocketContext)
   const userLogin = JSON.parse(localStorage.getItem('user'))
-  const initData = {
-    event_name: 'create/project',
-    project_id: '',
-    name: '',
-    users: [userLogin.id]
-  }
 
+  const initData = useMemo(() => {
+    return {
+      event_name: 'create/project',
+      project_id: '',
+      name: '',
+      users: [JSON.parse(localStorage.getItem('user')).id]
+    };
+  }, [])
 
   const [users, setUsers] = useState([])
   const [projects, setProject] = useState([])
   const [errorMessage, setErrorMessage] = useState('');
   const [dataCreate, setDataCreate] = useState(initData);
 
-  const fetchDataUser = async () => {
+  const fetchDataUser = useCallback(async () => {
     try {
       const response = await UserAPI.getAll(localStorage.getItem('token'));
       setUsers(response?.data)
     } catch (err) {
       setErrorMessage('Server error')
     }
-  }
-  const sortArrayDesc = (array) => {
+  }, [setUsers, setErrorMessage])
+
+  const sortArrayDesc = useCallback((array) => {
     return array.sort(function (a, b) {
       return b.project_id - a.project_id;
     })
-  }
-  const fetchDataProjects = async () => {
+  }, [])
+
+  const fetchDataProjects = useCallback(async () => {
     try {
       const response = await UserAPI.getAllProject(localStorage.getItem('token'), userLogin.id);
       setProject(sortArrayDesc(response?.data))
     } catch (err) {
       setErrorMessage('Server error')
     }
-  }
+  }, [setProject, setErrorMessage, sortArrayDesc])
 
   useEffect(() => {
     fetchDataUser()

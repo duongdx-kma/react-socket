@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import { useState } from "react";
 import "./App.css"
 import {Link, useLocation} from "react-router-dom";
@@ -14,7 +14,7 @@ function App() {
   const projectRoute = ['projects', 'tasks']
   const { updateSocket  } = React.useContext(SocketContext)
 
-  const getRoutePath = (location) => {
+  const getRoutePath = useCallback((location) => {
     const { pathname } = location;
 
     switch (true) {
@@ -29,7 +29,7 @@ function App() {
         setActive('home')
         break
     }
-  };
+  }, [userRoute, setActive, projectRoute]);
 
   useEffect(() => {
     getRoutePath(location)
