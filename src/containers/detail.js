@@ -17,7 +17,7 @@ const Detail = () => {
     } catch (err) {
       setErrorMessage('Server error')
     }
-  }, [setUser, setErrorMessage])
+  }, [setUser, setErrorMessage, id])
   useEffect( () => {
     fetchData()
   }, [fetchData])
