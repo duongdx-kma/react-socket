@@ -61,7 +61,7 @@ pipeline {
             steps {
                 script {
                     echo "Received webhook payload: \n${params.GENERIC_WEBHOOK_PAYLOAD}"
-                    echo "Received webhook payload: ${current_status}"
+                    echo "testing current data: ${current_status}"
                     echo "${merged}"
                     echo "${ref}"
                     echo "${branch}"
