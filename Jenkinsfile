@@ -13,6 +13,16 @@ pipeline {
       nodejs "nodejs-16"
     }
     stages {
+        stage('Clean old code') {
+           steps {
+              // Clean before build
+              cleanWs()
+              // We need to explicitly checkout from SCM here
+              checkout scm
+              echo "Building ${env.JOB_NAME}..."
+          }
+        }
+
         // deploy instructions
         stage('Run Tests and build testing') {
             steps {
