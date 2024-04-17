@@ -8,25 +8,11 @@ pipeline {
         DOCKER_IMAGE_NAME = 'duong1200798/socket_app_react' // Name of your Docker Hub repository/image
         NODE_IMAGE = 'node:16-alpine' // Node.js Docker image to use
         REACT_APP_NAME = 'react-socket'
-        // environment
-        REACT_APP_API_URL=REACT_APP_API_URL
-        REACT_APP_WS_URL=REACT_APP_WS_URL
-    }
-    triggers {
-        changeRequest() // Trigger for pull request creation and merge events
     }
     stages {
         stage("Cleanup Workspace") {
             steps {
                 cleanWs()
-            }
-        }
-    }    
-    stages {
-        stage('Checkout from SCM') {
-            steps {
-                // Checkout your source code repository
-                git branch: 'master'  'https://github.com/duongdx-kma/react-socket'
             }
         }
         // deploy instructions
@@ -44,28 +30,13 @@ pipeline {
                     docker.image(NODE_IMAGE).inside('-v /var/run/docker.sock:/var/run/docker.sock') {
                         sh "cd ${REACT_APP_NAME}"
                         sh 'npm install'
-                        sh 'npm test'
+                        sh 'npm run test'
+                        sh 'npm run build'
                     }
                 }
             }
         }
         // deploy instructions
-        stage('Make env') {
-            when {
-                // Run only if it's a pull request merge event
-                beforeAgent false
-                expression {
-                    return currentBuild.changeSets == null
-                }
-            }
-            steps {
-                echo '***************** Make .env *******************'
-                sh '''
-                    echo "REACT_APP_API_URL=$REACT_APP_API_URL" >> .env
-                    echo "REACT_APP_WS_URL=$REACT_APP_WS_URL" >> .env
-                '''
-            }
-        }
         stage('Build Docker Image') {
             when {
                 // Run only if it's a pull request merge event
