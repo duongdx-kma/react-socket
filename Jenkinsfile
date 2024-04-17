@@ -37,6 +37,14 @@ pipeline {
                 }
             }
         }
+        stage('Log Request') {
+            steps {
+                script {
+                    echo "Received webhook payload: \n${params.GENERIC_WEBHOOK_PAYLOAD}"
+                    echo "Received webhook payload: \n${params}"
+                }
+            }
+        }
         // deploy instructions
         // https://bit-basics-backup.netlify.app/2019/september/jenkins-job-github-pullrequest/
         // https://www.linkedin.com/pulse/trigger-jenkins-build-when-pull-request-merged-branch-wijerathne/
