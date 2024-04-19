@@ -18,14 +18,14 @@ pipeline {
         [key: 'branch', value: '$.pull_request.base.ref'],
        ],
 
-       causeString: 'Triggered on $ref',
-       token: 'secrettoken',
-       tokenCredentialId: '',
-       printContributedVariables: true,
-       printPostContent: true,
-       silentResponse: false,
-       shouldNotFlatten: false,
-       regexpFilterText: '$ref',
+        causeString: 'Triggered on $ref',
+        token: 'secrettoken',
+        tokenCredentialId: '',
+        printContributedVariables: true,
+        printPostContent: true,
+        silentResponse: false,
+        shouldNotFlatten: false,
+        regexpFilterText: '$ref'
       )
     }
 
@@ -60,7 +60,7 @@ pipeline {
         stage('Log Request') {
             steps {
                 script {
-                    echo "Received webhook payload: \n${params.GENERIC_WEBHOOK_PAYLOAD}"
+                    echo "Received webhook payload: ${params.GENERIC_WEBHOOK_PAYLOAD}"
                     echo "testing current data: ${current_status}"
                     echo "${merged}"
                     echo "${ref}"
