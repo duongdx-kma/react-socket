@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'agent01'
+        node { label 'docker-agent-nodejs-16' }
     }
     environment {
         GITHUB_CREDENTIALS_ID = 'git_duongdx_kma'
@@ -28,9 +28,6 @@ pipeline {
        regexpFilterText: '$ref',
        regexpFilterExpression: 'refs/heads/(.*)' // Corrected regexpFilterExpression
       )
-    }
-    tools {
-      nodejs "nodejs-16"
     }
     stages {
         stage('Clean old code') {
@@ -61,6 +58,9 @@ pipeline {
             steps {
                 script {
                     echo "Received webhook payload: \n${params}"
+                    echo "current_status is: ${current_status}"
+                    echo "merged status: ${merged}"
+                    echo "branch: ${branch}"
                 }
             }
         }
