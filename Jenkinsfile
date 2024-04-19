@@ -2,12 +2,13 @@ pipeline {
     agent {
         label 'agent01'
     }
+
     environment {
         GITHUB_CREDENTIALS_ID = 'git_duongdx_kma'
         DOCKER_CREDENTIALS_ID = 'docker_duong1200798' // ID of Docker Hub credentials in Jenkins
         DOCKER_IMAGE_NAME = 'duong1200798/socket_app_react' // Name of your Docker Hub repository/image
         NODE_IMAGE = 'node:16-alpine' // Node.js Docker image to use
-        TAG = sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()
+        TAG = "sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()"
     }
     triggers {
       GenericTrigger(
@@ -18,14 +19,14 @@ pipeline {
         [key: 'branch', value: '$.pull_request.base.ref'],
        ],
 
-       causeString: 'Triggered on $ref',
-       token: 'secrettoken',
-       tokenCredentialId: '',
-       printContributedVariables: true,
-       printPostContent: true,
-       silentResponse: false,
-       shouldNotFlatten: false,
-       regexpFilterText: '$ref',
+        causeString: 'Triggered on $ref',
+        token: 'secrettoken',
+        tokenCredentialId: '',
+        printContributedVariables: true,
+        printPostContent: true,
+        silentResponse: false,
+        shouldNotFlatten: false,
+        regexpFilterText: '$ref'
       )
     }
 
@@ -60,7 +61,7 @@ pipeline {
         stage('Log Request') {
             steps {
                 script {
-                    echo "Received webhook payload: \n${params.GENERIC_WEBHOOK_PAYLOAD}"
+                    echo "Received webhook payload: ${params.GENERIC_WEBHOOK_PAYLOAD}"
                     echo "testing current data: ${current_status}"
                     echo "${merged}"
                     echo "${ref}"
