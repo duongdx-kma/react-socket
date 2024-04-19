@@ -8,7 +8,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'docker_duong1200798' // ID of Docker Hub credentials in Jenkins
         DOCKER_IMAGE_NAME = 'duong1200798/socket_app_react' // Name of your Docker Hub repository/image
         NODE_IMAGE = 'node:16-alpine' // Node.js Docker image to use
-        TAG = "latest"
+        TAG = "sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()"
     }
     triggers {
       GenericTrigger(
