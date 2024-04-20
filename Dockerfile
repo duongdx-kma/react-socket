@@ -13,6 +13,20 @@ RUN yarn build
 
 # stage 2 - build the final image and copy the react build files
 FROM public.ecr.aws/nginx/nginx:1.25-alpine
+
+ENV USER=executor
+ENV GROUP=executor
+
+RUN addgroup -g 1098 $GROUP \
+    && adduser -D -u 1098 $USER -G $GROUP \
+    && chown -R $USER:$GROUP /var/cache/nginx \
+    && chown -R $USER:$GROUP /var/log/nginx \
+    && chown -R $USER:$GROUP /etc/nginx/conf.d
+
+RUN chmod -R 777 /etc/nginx/conf.d
+
+USER $USER
+
 # copy artifacts from build stage
 COPY --from=build /app/build /usr/share/nginx/html
 
